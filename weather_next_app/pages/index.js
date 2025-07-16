@@ -1,4 +1,5 @@
 import { useState } from 'react';
+import Input from '../components/ui/input';
 import axios from 'axios';
 
 export default function Home() {
@@ -27,12 +28,12 @@ export default function Home() {
       <h1 className="text-3xl font-bold mb-6">Previsão do Tempo</h1>
       <div className="w-full max-w-md">
         <div className="flex">
-          <input
+          <Input
             type="text"
             value={city}
             onChange={(e) => setCity(e.target.value)}
             placeholder="Digite o nome da cidade"
-            className="flex-grow px-4 py-2 border border-gray-300 rounded-l-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
+            className="flex-grow rounded-l-md"
           />
           <button
             onClick={fetchWeather}
@@ -49,7 +50,7 @@ export default function Home() {
         )}
         {error && <p className="mt-4 text-red-500">{error}</p>}
         {weather && (
-          <div className="mt-6 bg-white p-6 rounded-lg shadow-md">
+          <div className="mt-6 bg-card text-card-foreground border border-border p-6 rounded-lg shadow-sm">
             <h2 className="text-2xl font-semibold flex items-center gap-2">
               <img src={`https://openweathermap.org/img/wn/${weather.weather[0].icon}@2x.png`} alt={weather.weather[0].description} className="w-12 h-12"/>
               {weather.name}, {weather.sys.country}
