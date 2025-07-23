@@ -1,6 +1,16 @@
 import { useState } from 'react';
-import Input from '../components/ui/input';
 import axios from 'axios';
+import {
+  Container,
+  TextField,
+  Button,
+  CircularProgress,
+  Card,
+  CardContent,
+  Typography,
+  Box,
+  Grid,
+} from '@mui/material';
 
 export default function Home() {
   const [city, setCity] = useState('');
@@ -24,47 +34,62 @@ export default function Home() {
   };
 
   return (
-    <div className="min-h-screen flex flex-col items-center justify-center p-4 text-gray-900">
-      <h1 className="text-3xl font-bold mb-6">Previsão do Tempo</h1>
-      <div className="w-full max-w-md">
-        <div className="flex">
-          <Input
-            type="text"
+    <Container maxWidth="sm">
+      <Box sx={{ my: 4, textAlign: 'center' }}>
+        <Typography variant="h4" component="h1" gutterBottom>
+          Previsão do Tempo
+        </Typography>
+        <Box sx={{ display: 'flex', alignItems: 'center', mb: 2 }}>
+          <TextField
+            fullWidth
+            label="Digite o nome da cidade"
+            variant="outlined"
             value={city}
             onChange={(e) => setCity(e.target.value)}
-            placeholder="Digite o nome da cidade"
-            className="flex-grow rounded-l-md"
+            onKeyPress={(e) => e.key === 'Enter' && fetchWeather()}
           />
-          <button
+          <Button
+            variant="contained"
             onClick={fetchWeather}
             disabled={loading}
-            className="bg-blue-500 text-white px-4 py-2 rounded-r-lg hover:bg-blue-600 disabled:bg-blue-300"
+            sx={{ ml: 1, py: 1.8 }}
           >
-            Buscar
-          </button>
-        </div>
-        {loading && (
-          <div className="flex justify-center mt-6">
-            <div className="w-8 h-8 border-4 border-blue-500 border-t-transparent rounded-full animate-spin"></div>
-          </div>
+            {loading ? <CircularProgress size={24} /> : 'Buscar'}
+          </Button>
+        </Box>
+        {error && (
+          <Typography color="error" sx={{ mt: 2 }}>
+            {error}
+          </Typography>
         )}
-        {error && <p className="mt-4 text-red-500">{error}</p>}
         {weather && (
-          <div className="mt-6 bg-card text-card-foreground border border-border p-6 rounded-lg shadow-sm">
-            <h2 className="text-2xl font-semibold flex items-center gap-2">
-              <img src={`https://openweathermap.org/img/wn/${weather.weather[0].icon}@2x.png`} alt={weather.weather[0].description} className="w-12 h-12"/>
-              {weather.name}, {weather.sys.country}
-            </h2>
-            <div className="mt-4 grid grid-cols-2 gap-4 text-sm">
-              <p><span className="font-medium">Temp:</span> {Math.round(weather.main.temp)}°C</p>
-              <p><span className="font-medium">Sensação:</span> {Math.round(weather.main.feels_like)}°C</p>
-              <p><span className="font-medium">Umidade:</span> {weather.main.humidity}%</p>
-              <p><span className="font-medium">Condição:</span> {weather.weather[0].description}</p>
-              <p><span className="font-medium">Vento:</span> {Math.round(weather.wind.speed * 3.6)} km/h</p>
-            </div>
-          </div>
+          <Card sx={{ mt: 2 }}>
+            <CardContent>
+              <Typography variant="h5" component="h2" sx={{ display: 'flex', alignItems: 'center', gap: 1 }}>
+                <img src={`https://openweathermap.org/img/wn/${weather.weather[0].icon}@2x.png`} alt={weather.weather[0].description} style={{ width: 50, height: 50 }}/>
+                {weather.name}, {weather.sys.country}
+              </Typography>
+              <Grid container spacing={2} sx={{ mt: 1 }}>
+                <Grid item xs={6}>
+                  <Typography>Temp: {Math.round(weather.main.temp)}°C</Typography>
+                </Grid>
+                <Grid item xs={6}>
+                  <Typography>Sensação: {Math.round(weather.main.feels_like)}°C</Typography>
+                </Grid>
+                <Grid item xs={6}>
+                  <Typography>Umidade: {weather.main.humidity}%</Typography>
+                </Grid>
+                <Grid item xs={6}>
+                  <Typography>Condição: {weather.weather[0].description}</Typography>
+                </Grid>
+                <Grid item xs={6}>
+                  <Typography>Vento: {Math.round(weather.wind.speed * 3.6)} km/h</Typography>
+                </Grid>
+              </Grid>
+            </CardContent>
+          </Card>
         )}
-      </div>
-    </div>
+      </Box>
+    </Container>
   );
 }
