@@ -2,7 +2,7 @@
 import { useState, useEffect } from 'react';
 import CitySelector from '../components/CitySelector';
 import InfoCard from '../components/InfoCard';
-import P5Background from '../components/P5Background';
+
 import { cities } from '../lib/cities';
 
 export default function Home() {
@@ -24,7 +24,7 @@ export default function Home() {
 
   return (
     <div className="min-h-screen bg-gray-100 text-gray-800">
-      <P5Background />
+      
       <main className="p-4 sm:p-6 md:p-8 max-w-7xl mx-auto">
         <header className="flex flex-col sm:flex-row justify-between items-center mb-8">
           <h1 className="text-4xl font-bold text-gray-900 mb-4 sm:mb-0">Astro Navigator</h1>
